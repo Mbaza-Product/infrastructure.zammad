@@ -1,0 +1,152 @@
+version: '2'
+
+services:
+
+  zammad-backup:
+    command: ["zammad-backup"]
+    depends_on:
+      - zammad-railsserver
+    entrypoint: /usr/local/bin/backup.sh
+    environment:
+      - BACKUP_SLEEP=86400
+      - HOLD_DAYS=10
+      - POSTGRESQL_USER=${POSTGRES_USER}
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASS}
+    image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
+    links:
+      - zammad-postgresql
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - zammad-backup:/var/tmp/zammad
+      - zammad-data:/opt/zammad
+
+  zammad-elasticsearch:
+    environment:
+      - discovery.type=single-node
+      #- discovery_seed_hosts=["127.0.0.1"]
+      #- network.host=0.0.0.0
+    image: ${IMAGE_REPO}:zammad-elasticsearch${VERSION}
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  zammad-init:
+    command: ["zammad-init"]
+    depends_on:
+      - zammad-postgresql
+    environment:
+      - POSTGRESQL_USER=${POSTGRES_USER}
+      - POSTGRESQL_PASS=${POSTGRES_PASS}      
+    image: ${IMAGE_REPO}:zammad${VERSION}
+    links:
+      - zammad-elasticsearch
+      - zammad-postgresql
+    restart: on-failure
+    networks:
+      - infrastructure_default
+    volumes:
+      - zammad-data:/opt/zammad
+
+  zammad-memcached:
+    command: memcached -m 256M
+    image: memcached:1.6.9-alpine
+    networks:
+      - infrastructure_default
+    restart: ${RESTART}
+
+  zammad-nginx:
+    command: ["zammad-nginx"]
+    #expose:
+    #  - "80"
+    #ports:
+    #  - "443:443"
+    #  - "80:80" #optional
+    depends_on:
+      - zammad-railsserver
+    image: ${IMAGE_REPO}:zammad${VERSION}
+    links:
+      - zammad-railsserver
+      - zammad-websocket
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - zammad-data:/opt/zammad
+
+  zammad-postgresql:
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+    image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+  zammad-railsserver:
+    command: ["zammad-railsserver"]
+    depends_on:
+      - zammad-memcached
+      - zammad-postgresql
+    image: ${IMAGE_REPO}:zammad${VERSION}
+    links:
+      - zammad-elasticsearch
+      - zammad-memcached
+      - zammad-postgresql
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - zammad-data:/opt/zammad
+
+  zammad-scheduler:
+    command: ["zammad-scheduler"]
+    depends_on:
+      - zammad-memcached
+      - zammad-railsserver
+    image: ${IMAGE_REPO}:zammad${VERSION}
+    links:
+      - zammad-elasticsearch
+      - zammad-memcached
+      - zammad-postgresql
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - zammad-data:/opt/zammad
+
+  zammad-websocket:
+    command: ["zammad-websocket"]
+    depends_on:
+      - zammad-memcached
+      - zammad-railsserver
+    image: ${IMAGE_REPO}:zammad${VERSION}
+    links:
+      - zammad-postgresql
+      - zammad-memcached
+    restart: ${RESTART}
+    networks:
+      - infrastructure_default
+    volumes:
+      - zammad-data:/opt/zammad
+
+networks:
+  infrastructure_default: # external network
+    external: true
+  # internal_infrastructure: #internal network
+  #   internal: true 
+
+volumes:
+  elasticsearch-data:
+    driver: local
+  postgresql-data:
+    driver: local
+  zammad-backup:
+    driver: local
+  zammad-data:
+    driver: local

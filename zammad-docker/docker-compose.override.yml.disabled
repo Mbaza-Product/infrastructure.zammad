@@ -1,0 +1,6 @@
+version: '2'
+services:
+
+  zammad-nginx:
+    ports:
+            - "8500:80"
