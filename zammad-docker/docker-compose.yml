@@ -64,8 +64,9 @@ services:
     # expose:
     #  - "8080"
     ports:
-     - "443:8080"
+     - "443:443"
      - "80:8080"
+     - "8080:8080"
     depends_on:
       - zammad-railsserver
     image: ${IMAGE_REPO}:zammad${VERSION}
