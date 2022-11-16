@@ -1,0 +1,24 @@
+name: Run zammad container on dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Docker compose command'
+        required: true
+        default: 'up -d'
+        type: choice
+        options:
+        - up -d
+        - down
+        - restart
+
+jobs:
+  run_container: 
+    uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
+    with: 
+      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/mbaza
+      ENVIRONMENT: development
+      PARAMETER: ${{ github.event.inputs.command }}
+      SERVICE_LOCATION_PATH: /zammad/zammad-docker
+      TARGET_FOLDER: current

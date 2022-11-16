@@ -13,8 +13,8 @@ services:
       - POSTGRESQL_USER=${POSTGRES_USER}
       - POSTGRESQL_PASSWORD=${POSTGRES_PASS}
     image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
-    links:
-      - zammad-postgresql
+    # links:
+    #   - zammad-postgresql
     restart: ${RESTART}
     networks:
       - infrastructure_default
@@ -36,15 +36,16 @@ services:
 
   zammad-init:
     command: ["zammad-init"]
-    depends_on:
-      - zammad-postgresql
+    # depends_on:
+    #   - zammad-postgresql
     environment:
       - POSTGRESQL_USER=${POSTGRES_USER}
-      - POSTGRESQL_PASS=${POSTGRES_PASS}      
+      - POSTGRESQL_PASS=${POSTGRES_PASS}
+      - POSTGRESQL_HOST=${POSTGRES_HOST}      
     image: ${IMAGE_REPO}:zammad${VERSION}
     links:
       - zammad-elasticsearch
-      - zammad-postgresql
+      # - zammad-postgresql
     restart: on-failure
     networks:
       - infrastructure_default
@@ -60,8 +61,8 @@ services:
 
   zammad-nginx:
     command: ["zammad-nginx"]
-    #expose:
-    #  - "80"
+    expose:
+     - "8080"
     #ports:
     #  - "443:443"
     #  - "80:80" #optional
@@ -77,27 +78,27 @@ services:
     volumes:
       - zammad-data:/opt/zammad
 
-  zammad-postgresql:
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASS}
-    image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
-    restart: ${RESTART}
-    networks:
-      - infrastructure_default
-    volumes:
-      - postgresql-data:/var/lib/postgresql/data
+  # zammad-postgresql:
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASS}
+  #   image: ${IMAGE_REPO}:zammad-postgresql${VERSION}
+  #   restart: ${RESTART}
+  #   networks:
+  #     - infrastructure_default
+  #   volumes:
+  #     - postgresql-data:/var/lib/postgresql/data
 
   zammad-railsserver:
     command: ["zammad-railsserver"]
     depends_on:
       - zammad-memcached
-      - zammad-postgresql
+      # - zammad-postgresql
     image: ${IMAGE_REPO}:zammad${VERSION}
     links:
       - zammad-elasticsearch
       - zammad-memcached
-      - zammad-postgresql
+      # - zammad-postgresql
     restart: ${RESTART}
     networks:
       - infrastructure_default
@@ -113,7 +114,7 @@ services:
     links:
       - zammad-elasticsearch
       - zammad-memcached
-      - zammad-postgresql
+      # - zammad-postgresql
     restart: ${RESTART}
     networks:
       - infrastructure_default
@@ -127,7 +128,7 @@ services:
       - zammad-railsserver
     image: ${IMAGE_REPO}:zammad${VERSION}
     links:
-      - zammad-postgresql
+      # - zammad-postgresql
       - zammad-memcached
     restart: ${RESTART}
     networks:

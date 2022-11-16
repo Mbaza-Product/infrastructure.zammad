@@ -1,0 +1,42 @@
+name: Build image
+on:
+  push:
+    branches: ["dev"]
+    paths-ignore:
+      - '.github/workflows/start-stop-service-on-dev.yml'
+      - '.github/workflows/zammad-start-stop-service-on-dev.yml'
+      - '.github/workflows/zammad-maintain-service-dev.yaml'
+
+env:
+  repo_location: mbaza-product/infratructure.github.template/.github/workflows
+  zammad_path: zammad/zammad-docker
+  environment: development
+
+jobs: 
+  deploy_to_server_zammad: 
+    uses: mbaza-product/infratructure.github.template/.github/workflows/deploy-to-server.yaml@main
+    with:
+      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      NETWORK_NAME: infrastructure_default
+      ENVIRONMENT: zammad
+
+  build_zammad_docker:
+    needs: deploy_to_server_zammad
+    uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
+    with: 
+      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      ENVIRONMENT: zammad
+      PARAMETER: build
+      SERVICE_LOCATION_PATH: zammad/zammad-docker
+      TARGET_FOLDER: ${GITHUB_SHA::7}
+
+  deploy_to_dev_zammad:
+    needs: build_zammad_docker
+    uses: mbaza-product/infratructure.github.template/.github/workflows/build_and_deploy.yaml@main
+    with: 
+      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      ENVIRONMENT: zammad
+      SERVICE_LOCATION_PATH: zammad/zammad-docker
+
+  
+          
