@@ -8,7 +8,7 @@ on:
 
 env:
   repo_location: mbaza-product/infratructure.github.template/.github/workflows
-  zammad_path: zammad/zammad-docker
+  zammad_path: zammad-docker
   environment: development
 
 jobs: 
@@ -26,7 +26,7 @@ jobs:
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
       ENVIRONMENT: zammad
       PARAMETER: build
-      SERVICE_LOCATION_PATH: zammad/zammad-docker
+      SERVICE_LOCATION_PATH: zammad-docker
       TARGET_FOLDER: ${GITHUB_SHA::7}
 
   deploy_to_dev_zammad:
@@ -35,7 +35,7 @@ jobs:
     with: 
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
       ENVIRONMENT: zammad
-      SERVICE_LOCATION_PATH: zammad/zammad-docker
+      SERVICE_LOCATION_PATH: zammad-docker
 
   
           

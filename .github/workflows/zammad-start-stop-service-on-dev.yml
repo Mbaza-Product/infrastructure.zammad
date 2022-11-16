@@ -20,5 +20,5 @@ jobs:
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
       ENVIRONMENT: development
       PARAMETER: ${{ github.event.inputs.command }}
-      SERVICE_LOCATION_PATH: zammad/zammad-docker
+      SERVICE_LOCATION_PATH: zammad-docker
       TARGET_FOLDER: current

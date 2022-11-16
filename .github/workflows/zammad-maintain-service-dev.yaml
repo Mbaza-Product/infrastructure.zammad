@@ -22,6 +22,6 @@ jobs:
       PARAMETER: ${{ github.event.inputs.command }}
       SERVICE: zammad
       PROJECT_BACKUP_PATH: /home/mbaza-dev/mbaza/backup
-      SERVICE_LOCATION_PATH: zammad/zammad-docker
+      SERVICE_LOCATION_PATH: zammad-docker
       BACKUP_SCRIPT_FILE: shellscripts/backup-multiple-volumes.sh
       RESTORE_SCRIPT_FILE: shellscripts/restore-volume.sh
