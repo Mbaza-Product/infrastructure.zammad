@@ -61,11 +61,11 @@ services:
 
   zammad-nginx:
     command: ["zammad-nginx"]
-    expose:
-     - "8080"
-    #ports:
-    #  - "443:443"
-    #  - "80:80" #optional
+    # expose:
+    #  - "8080"
+    ports:
+     - "443:443"
+     - "80:80"
     depends_on:
       - zammad-railsserver
     image: ${IMAGE_REPO}:zammad${VERSION}
