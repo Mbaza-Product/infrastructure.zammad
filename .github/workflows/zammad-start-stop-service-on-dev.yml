@@ -18,7 +18,7 @@ jobs:
     uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
     with: 
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-      ENVIRONMENT: development
+      ENVIRONMENT: zammad
       PARAMETER: ${{ github.event.inputs.command }}
       SERVICE_LOCATION_PATH: zammad-docker
       TARGET_FOLDER: current
