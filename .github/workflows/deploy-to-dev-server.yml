@@ -3,7 +3,6 @@ on:
   push:
     branches: ["dev"]
     paths-ignore:
-      - '.github/workflows/start-stop-service-on-dev.yml'
       - '.github/workflows/zammad-start-stop-service-on-dev.yml'
       - '.github/workflows/zammad-maintain-service-dev.yaml'
 
