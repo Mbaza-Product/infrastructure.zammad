@@ -1,4 +1,4 @@
-name: Run zammad container on dev
+name: Run zammad container on staging environment
 
 on:
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
   run_container: 
     uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
     with: 
-      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      PROJECT_ROOT_PATH: /home/mbaza-test/mbaza/zammad
       ENVIRONMENT: mbaza-product-test
       PARAMETER: ${{ github.event.inputs.command }}
       SERVICE_LOCATION_PATH: zammad-docker
