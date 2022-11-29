@@ -32,6 +32,6 @@ jobs:
               mbaza/zammad/test POSTGRES_PASS;
       - name: run up the container
         run: |-
-          envsubst < .env > .env
           cd /home/mbaza-test/mbaza/zammad/current/zammad-docker
+          envsubst < .env > .env
           docker compose ${{github.event.inputs.COMMAND}}
