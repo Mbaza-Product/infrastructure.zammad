@@ -1,4 +1,4 @@
-name: Build image
+name: Build image on test
 on:
   push:
     branches: ["test"]
