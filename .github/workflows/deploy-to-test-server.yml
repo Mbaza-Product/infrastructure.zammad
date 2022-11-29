@@ -1,4 +1,4 @@
-name: Build image on test
+name: Build image on staging environment
 on:
   push:
     branches: ["test"]
@@ -17,7 +17,7 @@ jobs:
   deploy_to_server_zammad: 
     uses: mbaza-product/infratructure.github.template/.github/workflows/deploy-to-server.yaml@main
     with:
-      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      PROJECT_ROOT_PATH: /home/mbaza-test/mbaza/zammad
       NETWORK_NAME: infrastructure_default
       ENVIRONMENT: mbaza-product-test
 
@@ -25,7 +25,7 @@ jobs:
     needs: deploy_to_server_zammad
     uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
     with: 
-      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      PROJECT_ROOT_PATH: /home/mbaza-test/mbaza/zammad
       ENVIRONMENT: mbaza-product-test
       PARAMETER: build
       SERVICE_LOCATION_PATH: zammad-docker
@@ -35,7 +35,7 @@ jobs:
     needs: build_zammad_docker
     uses: mbaza-product/infratructure.github.template/.github/workflows/build_and_deploy.yaml@main
     with: 
-      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+      PROJECT_ROOT_PATH: /home/mbaza-test/mbaza/zammad
       ENVIRONMENT: mbaza-product-test
       SERVICE_LOCATION_PATH: zammad-docker
 
