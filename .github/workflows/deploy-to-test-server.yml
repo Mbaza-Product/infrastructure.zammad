@@ -1,11 +1,11 @@
 name: Build image
 on:
   push:
-    branches: ["dev"]
+    branches: ["test"]
     paths-ignore:
       - '.github/workflows/zammad-start-stop-service-on-dev.yml'
       - '.github/workflows/zammad-maintain-service-dev.yaml'
-      - '.github/workflows/zammad-deploy-to-test-server.yml'
+      - '.github/workflows/zammad-deploy-to-dev-server.yml'
       - './github/workflows/zammad-start-stop-service-on-test.yml'
 
 env:
@@ -19,14 +19,14 @@ jobs:
     with:
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
       NETWORK_NAME: infrastructure_default
-      ENVIRONMENT: zammad
+      ENVIRONMENT: mbaza-product-test
 
   build_zammad_docker:
     needs: deploy_to_server_zammad
     uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
     with: 
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-      ENVIRONMENT: zammad
+      ENVIRONMENT: mbaza-product-test
       PARAMETER: build
       SERVICE_LOCATION_PATH: zammad-docker
       TARGET_FOLDER: ${GITHUB_SHA::7}
@@ -36,7 +36,7 @@ jobs:
     uses: mbaza-product/infratructure.github.template/.github/workflows/build_and_deploy.yaml@main
     with: 
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-      ENVIRONMENT: zammad
+      ENVIRONMENT: mbaza-product-test
       SERVICE_LOCATION_PATH: zammad-docker
 
   
