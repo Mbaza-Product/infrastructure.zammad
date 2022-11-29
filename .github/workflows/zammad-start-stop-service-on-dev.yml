@@ -15,10 +15,31 @@ on:
 
 jobs:
   run_container: 
-    uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
-    with: 
-      PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-      ENVIRONMENT: zammad
-      PARAMETER: ${{ github.event.inputs.command }}
-      SERVICE_LOCATION_PATH: zammad-docker
-      TARGET_FOLDER: current
+    name: run the container in docker on dev servers
+    runs-on:
+      - zammad
+    steps:
+      - name: import secrets 
+        id: secrets
+        uses: hashicorp/vault-action@v2.4.3
+        with:
+          url: https://vault.dev.mbaza.org
+          token: ${{ secrets.VAULT_TOKEN }}
+          method: token
+          secrets: |
+              mbaza/zammad/dev POSTGRES_HOST;
+              mbaza/zammad/dev POSTGRES_USER;
+              mbaza/zammad/dev POSTGRES_PASS;
+      - name: run up the container
+        run: |-
+          envsubst < .env > .env
+          cd /home/mbaza-dev/mbaza/zammad/current/zammad-docker
+          docker compose ${{github.event.inputs.COMMAND}}
+
+    # uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
+    # with: 
+    #   PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
+    #   ENVIRONMENT: zammad
+    #   PARAMETER: ${{ github.event.inputs.command }}
+    #   SERVICE_LOCATION_PATH: zammad-docker
+    #   TARGET_FOLDER: current
