@@ -27,9 +27,9 @@ jobs:
           method: github
           githubToken: ${{ secrets.MBAZA_GITHUB_TOKEN }}
           secrets: |
-              mbaza/zammad/dev POSTGRES_HOST;
-              mbaza/zammad/dev POSTGRES_USER;
-              mbaza/zammad/dev POSTGRES_PASS;
+              mbaza/zammad/dev ZAMMAD_HOST;
+              mbaza/zammad/dev ZAMMAD_USER;
+              mbaza/zammad/dev ZAMMAD_PASS;
       - name: run up the container
         run: |-
           cd /home/mbaza-dev/mbaza/zammad/current/zammad-docker
