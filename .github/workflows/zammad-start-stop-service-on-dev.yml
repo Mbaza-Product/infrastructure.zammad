@@ -24,8 +24,9 @@ jobs:
         uses: hashicorp/vault-action@v2.4.3
         with:
           url: https://vault.dev.mbaza.org
-          token: ${{ secrets.VAULT_TOKEN }}
-          method: token
+          method: github
+          token: ${{ secrets.MBAZA_GITHUB_TOKEN }}
+          
           secrets: |
               mbaza/zammad/dev POSTGRES_HOST;
               mbaza/zammad/dev POSTGRES_USER;
