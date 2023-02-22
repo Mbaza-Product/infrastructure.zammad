@@ -33,7 +33,7 @@ jobs:
       - name: run up the container
         run: |-
           cd /home/mbaza-dev/mbaza/zammad/current/zammad-docker
-          envsubst < .env.examples > .env
+          envsubst < .env.example > .env
           docker compose ${{github.event.inputs.COMMAND}}
 
     # uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
