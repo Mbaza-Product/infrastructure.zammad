@@ -17,7 +17,7 @@ jobs:
   run_container: 
     name: run the container in docker on dev servers
     runs-on:
-      - zammad
+      - development
     steps:
       - name: import secrets 
         id: secrets
