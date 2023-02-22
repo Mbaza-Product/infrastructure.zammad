@@ -25,8 +25,7 @@ jobs:
         with:
           url: https://vault.dev.mbaza.org
           method: github
-          token: ${{ secrets.MBAZA_GITHUB_TOKEN }}
-          
+          githubToken: ${{ secrets.MBAZA_GITHUB_TOKEN }}
           secrets: |
               mbaza/zammad/dev POSTGRES_HOST;
               mbaza/zammad/dev POSTGRES_USER;
