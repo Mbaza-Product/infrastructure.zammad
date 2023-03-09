@@ -17,23 +17,23 @@ jobs:
   run_container: 
     name: run the container in docker on dev servers
     runs-on:
-      - zammad
+      - development
     steps:
       - name: import secrets 
         id: secrets
         uses: hashicorp/vault-action@v2.4.3
         with:
           url: https://vault.dev.mbaza.org
-          token: ${{ secrets.VAULT_TOKEN }}
-          method: token
+          method: github
+          githubToken: ${{ secrets.MBAZA_GITHUB_TOKEN }}
           secrets: |
-              mbaza/zammad/dev POSTGRES_HOST;
-              mbaza/zammad/dev POSTGRES_USER;
-              mbaza/zammad/dev POSTGRES_PASS;
+              mbaza/zammad/dev ZAMMAD_HOST;
+              mbaza/zammad/dev ZAMMAD_USER;
+              mbaza/zammad/dev ZAMMAD_PASS;
       - name: run up the container
         run: |-
           cd /home/mbaza-dev/mbaza/zammad/current/zammad-docker
-          envsubst < .env.examples > .env
+          envsubst < .env.example > .env
           docker compose ${{github.event.inputs.COMMAND}}
 
     # uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main

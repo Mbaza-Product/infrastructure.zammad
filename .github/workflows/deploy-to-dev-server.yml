@@ -19,14 +19,14 @@ jobs:
     with:
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
       NETWORK_NAME: infrastructure_default
-      ENVIRONMENT: zammad
+      ENVIRONMENT: development
 
   build_zammad_docker:
     needs: deploy_to_server_zammad
     uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
     with: 
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-      ENVIRONMENT: zammad
+      ENVIRONMENT: development
       PARAMETER: build
       SERVICE_LOCATION_PATH: zammad-docker
       TARGET_FOLDER: ${GITHUB_SHA::7}
@@ -36,7 +36,7 @@ jobs:
     uses: mbaza-product/infratructure.github.template/.github/workflows/build_and_deploy.yaml@main
     with: 
       PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-      ENVIRONMENT: zammad
+      ENVIRONMENT: development
       SERVICE_LOCATION_PATH: zammad-docker
 
   
