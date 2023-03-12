@@ -6,7 +6,7 @@ on:
       - '.github/workflows/zammad-start-stop-service-on-dev.yml'
       - '.github/workflows/zammad-maintain-service-dev.yaml'
       - '.github/workflows/zammad-deploy-to-test-server.yml'
-      - './github/workflows/zammad-start-stop-service-on-test.yml'
+      - '.github/workflows/zammad-start-stop-service-on-test.yml'
 
 env:
   repo_location: mbaza-product/infratructure.github.template/.github/workflows
