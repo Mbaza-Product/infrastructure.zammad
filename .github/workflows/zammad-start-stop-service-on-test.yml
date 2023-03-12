@@ -15,7 +15,7 @@ on:
 
 jobs:
   run_container: 
-    name: run the container in docker on dev servers
+    name: run the container in docker on staging servers
     runs-on:
       - mbaza-product-test
     steps:
@@ -30,6 +30,7 @@ jobs:
               mbaza/zammad/dev ZAMMAD_HOST;
               mbaza/zammad/dev ZAMMAD_USER;
               mbaza/zammad/dev ZAMMAD_PASS;
+              mbaza/zammad/dev ZAMMAD_DB;
       - name: run up the container
         run: |-
           cd /home/mbaza-test/mbaza/zammad/current/zammad-docker
