@@ -30,6 +30,7 @@ jobs:
               mbaza/zammad/dev ZAMMAD_HOST;
               mbaza/zammad/dev ZAMMAD_USER;
               mbaza/zammad/dev ZAMMAD_PASS;
+              mbaza.zammad/dev ZAMMAD_DB;
       - name: run up the container
         run: |-
           cd /home/mbaza-dev/mbaza/zammad/current/zammad-docker
