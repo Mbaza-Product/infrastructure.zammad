@@ -1,4 +1,4 @@
-name: Run zammad container on dev
+name: Run zammad container on staging environment
 
 on:
   workflow_dispatch:
@@ -15,9 +15,9 @@ on:
 
 jobs:
   run_container: 
-    name: run the container in docker on dev servers
+    name: run the container in docker on staging servers
     runs-on:
-      - development
+      - mbaza-product-test
     steps:
       - name: import secrets 
         id: secrets
@@ -27,20 +27,12 @@ jobs:
           method: github
           githubToken: ${{ secrets.MBAZA_GITHUB_TOKEN }}
           secrets: |
-              mbaza/zammad/dev ZAMMAD_HOST;
-              mbaza/zammad/dev ZAMMAD_USER;
-              mbaza/zammad/dev ZAMMAD_PASS;
-              mbaza.zammad/dev ZAMMAD_DB;
+              mbaza/zammad/test ZAMMAD_HOST;
+              mbaza/zammad/test ZAMMAD_USER;
+              mbaza/zammad/test ZAMMAD_PASS;
+              mbaza/zammad/test ZAMMAD_DB;
       - name: run up the container
         run: |-
-          cd /home/mbaza-dev/mbaza/zammad/current/zammad-docker
+          cd /home/mbaza-test/mbaza/zammad/current/zammad-docker
           envsubst < .env.example > .env
           docker compose ${{github.event.inputs.COMMAND}}
-
-    # uses: mbaza-product/infratructure.github.template/.github/workflows/run-docker.yaml@main
-    # with: 
-    #   PROJECT_ROOT_PATH: /home/mbaza-dev/mbaza/zammad
-    #   ENVIRONMENT: zammad
-    #   PARAMETER: ${{ github.event.inputs.command }}
-    #   SERVICE_LOCATION_PATH: zammad-docker
-    #   TARGET_FOLDER: current

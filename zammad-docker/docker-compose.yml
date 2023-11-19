@@ -41,7 +41,8 @@ services:
     environment:
       - POSTGRESQL_USER=${POSTGRES_USER}
       - POSTGRESQL_PASS=${POSTGRES_PASS}
-      - POSTGRESQL_HOST=${POSTGRES_HOST}      
+      - POSTGRESQL_HOST=${POSTGRES_HOST}
+      - POSTGRESQL_DB=${POSTGRESQL_DB}      
     image: ${IMAGE_REPO}:zammad${VERSION}
     links:
       - zammad-elasticsearch
@@ -61,11 +62,11 @@ services:
 
   zammad-nginx:
     command: ["zammad-nginx"]
-    expose:
-     - "8080"
-    #ports:
+    # expose:
+    #  - "8080"
+    # ports:
     #  - "443:443"
-    #  - "80:80" #optional
+    #  - "80:8080"
     depends_on:
       - zammad-railsserver
     image: ${IMAGE_REPO}:zammad${VERSION}
